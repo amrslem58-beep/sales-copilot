@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F1620">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="مساعد المبيعات">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<title>مساعد المبيعات</title>
+<style>
+:root{--bg:#EEF1F6;--card:#fff;--ink:#16202E;--mut:#5B6B7F;--ac:#3949D6;--acx:#fff;--bd:#D9DFE8;--hot:#D64545;--ok:#1E8E5A;color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root{--bg:#0F1620;--card:#172231;--ink:#E6ECF3;--mut:#91A1B5;--ac:#8EA2FF;--acx:#0F1620;--bd:#26364A;--hot:#FF7A7A;--ok:#4FD39A}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.7 Tajawal,"Segoe UI",Tahoma,sans-serif;display:flex;flex-direction:column;max-width:680px;margin:auto}
+header{display:flex;align-items:center;gap:8px;padding:calc(env(safe-area-inset-top,0px) + 10px) 14px 6px}
+header h1{font-size:18px;margin:0;flex:1}
+.pill{font-size:12px;color:var(--mut);background:var(--card);border:1px solid var(--bd);border-radius:999px;padding:1px 10px}
+.pill.bad{color:var(--hot);border-color:var(--hot)}
+.ib{background:none;border:0;font-size:20px;color:var(--ink);padding:4px 8px;cursor:pointer}
+main{flex:1;overflow:auto;padding:4px 14px 12px}
+.live{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:10px 12px;max-height:26vh;overflow:auto;min-height:56px}
+.live .p{color:var(--mut)}
+.empty{color:var(--mut);font-size:14px;text-align:center;padding:26px 8px}
+.rc{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;margin-top:10px}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:12.5px;color:var(--mut);border:1px solid var(--bd);border-radius:999px;padding:0 10px}
+.tag:empty{display:none}
+.rep{font-size:20px;font-weight:700;line-height:1.75;margin:8px 0;white-space:pre-wrap}
+.seg{display:flex;border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+.seg button{flex:1;border:0;background:none;color:var(--ink);font:inherit;font-size:14px;padding:7px 4px;cursor:pointer;border-inline-start:1px solid var(--bd)}
+.seg button:first-child{border-inline-start:0}
+.acts{display:flex;gap:6px;margin-top:8px;align-items:center}
+.acts button{background:none;border:1px solid var(--bd);border-radius:10px;color:var(--ink);font:inherit;padding:4px 12px;cursor:pointer}
+.acts .sp{flex:1}
+.acts .on{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+.rc details{margin-top:8px;font-size:14px;color:var(--mut)}
+.rc summary{cursor:pointer}
+.rc details div{margin-top:4px}
+.dock{padding:8px 14px calc(env(safe-area-inset-bottom,0px) + 10px);background:var(--bg);border-top:1px solid var(--bd)}
+.in{display:flex;background:var(--card);border:1px solid var(--bd);border-radius:12px;overflow:hidden}
+.in input{flex:1;border:0;background:none;color:var(--ink);font:inherit;padding:10px 12px;min-width:0}
+.in button{border:0;background:none;color:var(--ac);font-size:20px;padding:0 14px;cursor:pointer}
+.main{display:flex;gap:8px;margin-top:8px}
+.main button{font:inherit;font-size:18px;font-weight:700;border-radius:14px;border:0;padding:14px;cursor:pointer}
+#mic{flex:1;background:var(--card);color:var(--ink);border:1px solid var(--bd)}
+#mic.on{background:var(--hot);color:#fff;border-color:var(--hot);animation:pl 1.6s infinite}
+#go{flex:1.4;background:var(--ac);color:var(--acx)}
+#end{flex:0 0 auto;background:none;border:1px solid var(--bd);color:var(--ink);font-size:15px;padding:14px 12px}
+@keyframes pl{50%{opacity:.72}}
+@media (prefers-reduced-motion:reduce){#mic.on{animation:none}}
+dialog{border:0;border-radius:16px;background:var(--card);color:var(--ink);width:min(92vw,560px);max-height:88vh;padding:14px}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+dialog h2{margin:0 0 8px;font-size:17px}
+dialog label{display:block;font-size:14px;color:var(--mut);margin:10px 0 3px}
+dialog textarea,dialog input{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:9px}
+dialog textarea{min-height:120px;resize:vertical}
+.chips{display:flex;gap:6px;margin:6px 0}
+.chips button{flex:1;font:inherit;border:1px solid var(--bd);background:none;color:var(--ink);border-radius:10px;padding:8px 4px;cursor:pointer}
+.chips .on{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+.row{display:flex;gap:8px;margin-top:10px}
+.row button{flex:1;font:inherit;border-radius:10px;padding:10px;border:1px solid var(--bd);background:none;color:var(--ink);cursor:pointer}
+.row .pr{background:var(--ac);color:var(--acx);border-color:var(--ac);font-weight:700}
+#sum{white-space:pre-wrap;font-size:14.5px;color:var(--mut);margin-top:8px}
+.note{font-size:13px;color:var(--mut)}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎧 مساعد المبيعات</h1>
+  <span class="pill" id="st">🟢 متاح</span><span class="pill" id="cn"></span>
+  <button class="ib" id="setb" aria-label="الإعدادات">⚙️</button>
+</header>
+
+<main>
+  <div class="live" id="live"></div>
+  <div id="list"><div class="empty" id="emp">اضغط 🎤 واسمع العميل، وفي أي وقت اضغط «رد» تاخد اقتراح.</div></div>
+</main>
+
+<div class="dock">
+  <div class="in"><input id="typed" placeholder="اكتب كلام العميل أو الصق هنا" enterkeyhint="send"><button id="add" aria-label="إضافة">➕</button></div>
+  <div class="main"><button id="mic">🎤 استماع</button><button id="go">💬 رد</button><button id="end">إنهاء</button></div>
+</div>
+
+<dialog id="endd">
+  <h2>إنهاء المكالمة</h2>
+  <div class="chips" id="chips"><button data-v="نجحت" class="on">✅ نجحت</button><button data-v="مؤجلة">⏳ مؤجلة</button><button data-v="رفض">❌ رفض</button></div>
+  <label for="why">السبب بكلمتين (اختياري)</label><input id="why">
+  <div id="sum"></div>
+  <div class="row"><button class="pr" id="learn">🧠 لخّص وتعلّم</button><button id="fresh">مكالمة جديدة</button></div>
+  <div class="note" style="margin-top:8px">«لخّص وتعلّم» بيلخّص المكالمة ويحدّث دفتر خبرتك. «مكالمة جديدة» بتمسح الكلام والردود والدفتر يفضل محفوظ.</div>
+  <div class="row"><button id="endx">إغلاق</button></div>
+</dialog>
+
+<dialog id="setd">
+  <h2>الإعدادات</h2>
+  <label for="info">معلومات الشركة (الخدمات والأسعار ونقاط القوة والاعتراضات)</label><textarea id="info"></textarea>
+  <label for="ex">ردود ومكالمات ناجحة سابقة (الأداة بتقلّد أسلوبها)</label><textarea id="ex"></textarea>
+  <label for="pb">🧠 دفتر خبرتي (بيتحدّث بعد كل مكالمة، وتقدر تعدّله)</label><textarea id="pb"></textarea>
+  <label for="prov">مزود الذكاء الاصطناعي</label>
+  <select id="prov" style="width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:9px"><option value="claude">Claude (بيتدفع حسب الاستخدام)</option><option value="gemini">Gemini (فيه خطة مجانية)</option></select>
+  <label for="key">مفتاح الـ API (بيتحفظ على جهازك بس)</label><input id="key" type="password" autocomplete="off" placeholder="الصق المفتاح هنا">
+  <div id="gmw"><label for="gm">اسم نموذج Gemini</label><input id="gm"></div>
+  <div class="note" id="kn" style="margin-top:6px"></div>
+  <div class="note" style="margin-top:8px">المفتاح وكل الإعدادات محفوظة على جهازك بس، وما بتتبعتش غير لمزود الذكاء الاصطناعي اللي اخترته. ما تكتبش أسماء عملاء، وخد موافقة الشركة قبل الاستخدام مع عملاء حقيقيين.</div>
+  <div class="row"><button class="pr" id="setx">تم</button></div>
+</dialog>
+
+<script>
+const $=i=>document.getElementById(i);
+const ld=k=>{try{return localStorage.getItem(k)||""}catch{return ""}};
+const sv=(k,v)=>{try{localStorage.setItem(k,v)}catch{}};
+const DEF_INFO=`شركة "نبراس" للتسويق الرقمي - الرياض (بيانات تجريبية، بدّلها ببيانات شركتك)
+الخدمات والأسعار الشهرية:
+- إدارة سوشيال ميديا: من 2500 ريال
+- إعلانات ممولة: 1500 ريال إدارة + ميزانية الإعلان على العميل
+- متجر إلكتروني: من 6000 ريال مرة واحدة
+- باقة متكاملة: 5500 ريال شهريًا
+نقاط القوة:
+- تقرير أداء أسبوعي واضح بالأرقام
+- فريق متخصص لكل عميل
+- لا عقود طويلة، أقل مدة شهرين
+اعتراضات شائعة:
+- "غالي": قارن السعر بتكلفة عميل واحد مكسوب، ونقدر نبدأ بباقة أصغر
+- "عندي شركة تانية": اسأله إيه اللي ناقصه معاهم
+- "مو وقته": اسأله إيه اللي يخليه يأجل`;
+$("info").value=ld("info")||DEF_INFO;$("ex").value=ld("ex");$("pb").value=ld("pb");
+["info","ex","pb"].forEach(k=>$(k).oninput=()=>sv(k,$(k).value));
+const P=()=>ld("prov")||"claude";
+$("prov").value=P();
+function loadKey(){$("key").value=ld("key_"+P());$("gm").value=ld("gm")||"gemini-2.5-flash";$("gmw").style.display=P()==="gemini"?"block":"none";
+  $("kn").textContent=P()==="gemini"?"المفتاح المجاني من aistudio.google.com ← Get API key. تنبيه: في الخطة المجانية جوجل ممكن تستخدم المحادثات لتحسين منتجاتها، فاستخدمه بدون بيانات عملاء حقيقية.":"المفتاح من console.anthropic.com ← API Keys. محتاج رصيد مدفوع، مفيش مفتاح Claude مجاني."}
+$("prov").onchange=()=>{sv("prov",$("prov").value);loadKey()};
+$("key").oninput=()=>sv("key_"+P(),$("key").value);$("gm").oninput=()=>sv("gm",$("gm").value);
+loadKey();
+$("setb").onclick=()=>$("setd").showModal();$("setx").onclick=()=>$("setd").close();
+$("end").onclick=()=>$("endd").showModal();$("endx").onclick=()=>$("endd").close();
+
+let tr=[],pend="",prev=0,log=[],outcome="نجحت";
+/* عدّاد وحالة */
+const today=()=>new Date().toISOString().slice(0,10);
+function cnt(){try{const o=JSON.parse(ld("cnt")||"{}");return o.d===today()?o.n:0}catch{return 0}}
+function bump(){sv("cnt",JSON.stringify({d:today(),n:cnt()+1}));showCnt()}
+function showCnt(){$("cn").textContent="النهاردة: "+cnt()}
+function status(ok){const t=new Date();$("st").textContent=ok?"🟢 متاح":"🔴 الرصيد/الحد خلص "+t.getHours()+":"+("0"+t.getMinutes()).slice(-2);$("st").classList.toggle("bad",!ok)}
+showCnt();
+const esc=s=>{const d=document.createElement("div");d.textContent=s;return d.innerHTML};
+function render(){const l=$("live");l.innerHTML=esc(tr.join(" "))+(pend?`<span class="p"> ${esc(pend)}</span>`:"");if(!tr.length&&!pend)l.innerHTML='<span class="p">الكلام اللي بتسمعه هيظهر هنا…</span>';l.scrollTop=l.scrollHeight}
+render();
+
+/* الاتصال بالسيرفر (بث لحظي) */
+async function stream(prompt,tier,onText,signal){
+  const prov=P(),key=$("key").value.trim();
+  if(!key){const e=new Error("no key");e.status=401;throw e}
+  let url,headers,body;
+  if(prov==="gemini"){
+    const m=$("gm").value.trim()||"gemini-2.5-flash";
+    url="https://generativelanguage.googleapis.com/v1beta/models/"+m+":streamGenerateContent?alt=sse";
+    headers={"Content-Type":"application/json","x-goog-api-key":key};
+    body={contents:[{role:"user",parts:[{text:prompt}]}]};
+  }else{
+    url="https://api.anthropic.com/v1/messages";
+    headers={"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"};
+    body={model:tier==="default"?"claude-sonnet-5-5":"claude-haiku-5-5",max_tokens:tier==="default"?1800:700,stream:true,messages:[{role:"user",content:prompt}]};
+  }
+  const r=await fetch(url,{method:"POST",headers,body:JSON.stringify(body),signal});
+  if(!r.ok){const e=new Error(await r.text());e.status=r.status;throw e}
+  const rd=r.body.getReader(),dc=new TextDecoder();let t="",buf="";
+  for(;;){
+    const{done,value}=await rd.read();if(done)break;buf+=dc.decode(value,{stream:true});let i;
+    while((i=buf.indexOf("\n"))>=0){
+      const line=buf.slice(0,i).trim();buf=buf.slice(i+1);if(!line.startsWith("data:"))continue;
+      try{const j=JSON.parse(line.slice(5));
+        if(prov==="gemini"){const p=j.candidates&&j.candidates[0]&&j.candidates[0].content&&j.candidates[0].content.parts;if(p)t+=p.map(x=>x.text||"").join("")}
+        else if(j.type==="content_block_delta"&&j.delta&&j.delta.text)t+=j.delta.text;
+        onText(t)}catch{}
+    }
+  }
+  return t;
+}
+function errMsg(e){
+  if(e.name==="AbortError")return null;
+  if(e.status===401||e.status===403||/api key|api_key|authentication|permission/i.test(e.message)){$("setd").showModal();return "المفتاح ناقص أو غلط. الصقه في الإعدادات ⚙️."}
+  if(e.status===429||e.status===402||/credit|rate|overloaded/i.test(e.message)){status(false);return "وصلت لحد الاستخدام أو الرصيد خلص. الاستماع شغال، جرّب «رد» بعد شوية."}
+  return "حصلت مشكلة في الاتصال، اضغط «رد» تاني."
+}
+
+/* الأوامر */
+const KEYS={"الرد":"rep","النبرة":"t1","المرحلة":"t2","الاعتراض":"t3","القوة":"str","الأسئلة":"qs","الخطوة":"nxt"};
+const ICON={str:"💪 ",qs:"❓ ",nxt:"➡️ "};
+const q=(d,s)=>d.querySelector(s);
+function parse(txt,d){
+  let cur=null;const o={};
+  txt.split("\n").forEach(l=>{const m=l.match(/^\s*(الرد|النبرة|المرحلة|الاعتراض|القوة|الأسئلة|الخطوة)\s*[:：]\s*(.*)$/);
+    if(m){cur=KEYS[m[1]];o[cur]=m[2]}else if(cur&&l.trim())o[cur]+=" "+l.trim()});
+  Object.keys(o).forEach(id=>q(d,"."+id).textContent=(ICON[id]||"")+o[id].trim());
+}
+function base(){
+  return "انت مدرب مبيعات سعودي خبرتك 15 سنة في التسويق الرقمي، بتهمس في ودن المندوب وقت المكالمة. قواعدك: افهم اللي ورا كلام العميل (خوف، مقارنة، ميزانية، مجاملة للهروب). اعترف بكلامه قبل ما تردّ ولا تجادله. الرد زي كلام إنسان: جمل قصيرة بلهجة بيضاء قريبة من الخليجية، بدون عبارات رسمية جاهزة. رد واحد متماسك ينتهي بسؤال يفتح الحوار. لو المعلومة مش في بيانات الشركة قل خلني أراجع مع الفريق وأرجعلك ولا تألف. لا تكرر ردودك السابقة. استخدم معلومات الشركة فقط ولا تألف أسعار.\n\nمعلومات الشركة:\n"+$("info").value
+   +($("ex").value.trim()?"\n\nأمثلة ردود ناجحة قلّد روحها وأسلوبها ولا تنسخها:\n"+$("ex").value:"")
+   +($("pb").value.trim()?"\n\nدفتر خبرة المندوب (دروس حقيقية من مكالماته السابقة، التزم بها: كرر اللي نجح وتجنب اللي فشل، وابدأ بنقاط القوة اللي خلّت العملاء يلتفتوا):\n"+$("pb").value:"");
+}
+async function ask(prompt,d){
+  if(d._c)d._c.abort();d._c=new AbortController();
+  try{bump();await stream(prompt,"quick",t=>parse(t,d),d._c.signal);status(true)}
+  catch(e){const m=errMsg(e);if(m)q(d,".rep").textContent=m}
+}
+function mk(){
+  $("emp")&&$("emp").remove();
+  const d=document.createElement("div");d.className="rc";
+  d.innerHTML=`<div class="tags"><span class="tag t1"></span><span class="tag t2"></span><span class="tag t3"></span></div>
+  <div class="rep">…</div>
+  <div class="seg"><button data-m="أقصر">✂️ أقصر</button><button data-m="أدفى وأقرب للقلب">🤝 أدفى</button><button data-m="أقوى وأكثر حسمًا">💥 أقوى</button></div>
+  <div class="acts"><button class="g">👍 التفت</button><button class="b">👎</button><span class="sp"></span><button class="x" aria-label="حذف">🗑</button></div>
+  <details><summary>💡 نقاط القوة والأسئلة والخطوة</summary><div class="str"></div><div class="qs"></div><div class="nxt"></div></details>`;
+  $("list").insertBefore(d,$("list").firstChild);
+  d.onclick=e=>{const b=e.target.closest("button");if(!b)return;
+    if(b.dataset.m){const r=q(d,".rep").textContent;if(r&&r!=="…")ask(base()+"\n\nالرد الحالي: "+r+"\nأعد كتابته "+b.dataset.m+" مع نفس المعنى وبنفس اللهجة. اكتب سطر واحد يبدأ بـ الرد:",d)}
+    else if(b.classList.contains("g")||b.classList.contains("b")){rate(d,b.classList.contains("g"),b)}
+    else if(b.classList.contains("x")){if(d._c)d._c.abort();d.remove()}};
+  return d;
+}
+function rate(d,ok,b){
+  const r=q(d,".rep").textContent;if(!r||r==="…")return;
+  if(!d._e){d._e={};log.push(d._e)}
+  Object.assign(d._e,{c:d._n||"",r,s:q(d,".str").textContent,t:q(d,".t3").textContent,ok});
+  d.querySelectorAll(".g,.b").forEach(x=>x.classList.remove("on"));b.classList.add("on");
+}
+function respond(){
+  const pn=pend.trim();if(!tr.length&&!pn)return;
+  let nw=tr.slice(prev).join(" ")+(pn?" "+pn:"");if(!nw.trim())nw=tr[tr.length-1]||"";
+  prev=tr.length;
+  const old=[...document.querySelectorAll("#list .rep")].map(e=>e.textContent).filter(t=>t&&t!=="…");
+  const all=(tr.join("\n")+(pn?"\n"+pn:"")).slice(-12000);
+  const d=mk();d._n=nw;
+  ask(base()+"\n\nالحوار كله لحد دلوقتي:\n"+all+"\n\nكلام العميل الجديد بعد آخر رد، وده اللي هتردّ عليه دلوقتي مع مراعاة الحوار كله: "+nw+(old.length?"\n\nردود اقترحتها قبل كده (لا تكررها):\n"+old.join("\n"):"")+
+  "\n\nاكتب بالشكل ده بالضبط، كل بند في سطر يبدأ باسمه، والرد أولًا:\nالرد: الجملة اللي يقولها المندوب بالحرف، سطرين بالكتير\nالنبرة: نبرة العميل في كلمة أو اتنين\nالمرحلة: مرحلة المكالمة (تعارف/اكتشاف/عرض/اعتراض/قفل)\nالاعتراض: نوع الاعتراض أو نيّة العميل الحقيقية\nالقوة: نقطة قوة مناسبة من الشركة\nالأسئلة: سؤالين اكتشاف ذكيين بينهم |\nالخطوة: الخطوة التالية للمندوب",d);
+}
+$("go").onclick=respond;
+const add=()=>{const v=$("typed").value.trim();if(!v)return;tr.push(v);$("typed").value="";render()};
+$("add").onclick=add;$("typed").onkeydown=e=>{if(e.key==="Enter")add()};
+
+/* إنهاء المكالمة: تلخيص + تعلّم بزرار واحد */
+$("chips").onclick=e=>{const b=e.target.closest("button");if(!b)return;outcome=b.dataset.v;[...$("chips").children].forEach(x=>x.classList.toggle("on",x===b))};
+$("learn").onclick=async()=>{
+  if(!tr.length&&!log.length){$("sum").textContent="مفيش مكالمة نتعلم منها.";return}
+  $("learn").disabled=true;$("sum").textContent="بلخّص...";
+  try{
+    bump();await stream("لخّص مكالمة المبيعات دي بالعامية في 3 بنود: موقف العميل النهائي، أهم النقاط اللي اهتم بيها أو اعترض عليها، المتابعة المطلوبة ومتى. اختصر.\n\nالمكالمة:\n"+tr.join("\n"),"quick",t=>$("sum").textContent=t);
+    const old=$("pb").value;
+    const ev=log.map(x=>(x.ok?"[نجح] ":"[فشل] ")+"العميل: "+x.c+" | اعتراض: "+x.t+" | رد: "+x.r+" | "+x.s).join("\n");
+    const p="انت بتحدّث دفتر خبرة مندوب مبيعات بعد مكالمة. الدفتر الحالي:\n"+(old||"(فاضي)")+"\n\nالمكالمة:\n"+tr.join("\n")+"\n\nتقييمات المندوب للردود:\n"+(ev||"لا يوجد")+"\n\nنتيجة المكالمة: "+outcome+" — السبب: "+$("why").value+"\n\nادمج الدروس الجديدة في الدفتر وأعد كتابته كاملًا بالعامية، 25 نقطة بالكتير، تحت العناوين: ✅ نقاط قوة خلّت العميل يلتفت (ومع أي نوع عميل)، 🛡 اعتراضات وأفضل رد جرّبناه، ❌ أساليب فشلت ولازم ننتبه لها، 🎯 أسلوب التعامل حسب نبرة العميل. ادمج المتكرر وقوّي اللي اتكرر نجاحه ولا تخترع حاجة ما حصلتش، ولا تكتب أسماء عملاء. اكتب الدفتر فقط.";
+    bump();const nb=await stream(p,"default",()=>{});
+    if(nb.trim()){$("pb").value=nb;sv("pb",nb)}
+    log=[];status(true);$("sum").textContent+="\n\n✅ الدفتر اتحدّث وهيتطبق على الردود الجاية.";
+  }catch(e){$("sum").textContent=errMsg(e)||""}
+  $("learn").disabled=false;
+};
+$("fresh").onclick=()=>{
+  if(!confirm("هيمسح الكلام والردود. الدفتر والإعدادات هتفضل محفوظة. تكمل؟"))return;
+  tr=[];pend="";prev=0;log=[];$("list").innerHTML='<div class="empty" id="emp">اضغط 🎤 واسمع العميل، وفي أي وقت اضغط «رد» تاخد اقتراح.</div>';$("sum").textContent="";render();$("endd").close();
+};
+
+/* الاستماع المتواصل */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,want=false;
+function micUI(on){$("mic").classList.toggle("on",on);$("mic").textContent=on?"⏹ إيقاف":"🎤 استماع"}
+$("mic").onclick=()=>{
+  if(!SR){$("live").innerHTML='<span class="p">المتصفح ده مش بيدعم الاستماع. استخدم ميكروفون الكيبورد في خانة الكتابة، أو افتح الصفحة في كروم/سفاري.</span>';return}
+  if(want){want=false;try{rec.stop()}catch{}micUI(false);return}
+  rec=new SR();rec.lang="ar-SA";rec.continuous=true;rec.interimResults=true;
+  rec.onresult=e=>{let p="";for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal){const t=r[0].transcript.trim();if(t)tr.push(t)}else p+=r[0].transcript}pend=p;render()};
+  rec.onerror=e=>{if(e.error==="not-allowed"||e.error==="service-not-allowed"){want=false;micUI(false);$("live").innerHTML='<span class="p">المايك مش مسموح. فعّله من إعدادات المتصفح للموقع ده، وفي الآيفون فعّل الإملاء من الإعدادات ← عام ← لوحة المفاتيح.</span>'}};
+  rec.onend=()=>{if(want){try{rec.start()}catch{}}};
+  try{rec.start();want=true;micUI(true)}catch{}
+};
+if(!$("key").value.trim())setTimeout(()=>$("setd").showModal(),400);
+if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body>
+</html>
